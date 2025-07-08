@@ -1,0 +1,19 @@
+GridBackground {
+    --grid-background-color: #282828;
+    --line-color: rgba(193, 196, 192, 0.1);
+    --thick-line-color: rgba(193, 196, 192, 0.1);
+    --spacing: 10;
+}
+
+StateNode {
+    background-color: #323232;
+}
+
+ChildPort {
+    background-color: #323232;
+}
+
+/*
+.child-port-button {
+}
+*/
