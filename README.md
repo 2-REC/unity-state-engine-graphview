@@ -50,17 +50,25 @@ But flexible.
 
 ...
 
+----
+parse graph
 
-## Common...
+for each state
+	create (partial) class
+	=> not needed (?) for states with no children
+	(but create it anyway for every state?)
+		- 1 function for each child state (LoadChildSTATE)
+		+ empty class for state itself? (overrides, etc.)
+	create scene
+		- add GlobalManager or GameManager
+		- replace StateController script if have one associated to state/scene
 
-### States
++ clean existing but unused states stuff...
+----
 
-...
+## States & Operations
 
-### Operations
-
-- global
-- game
+(see other doc "state_operations.md")
 
 
 ====
@@ -96,3 +104,11 @@ code (not graph generation):
 - class diagrams
 - see how to fix editor issues with derived classes
 
+====
+
+# LINKS
+
+GraphView tut:
+https://www.youtube.com/watch?v=7KHGH0fPL84
+(+part 2)
+https://www.youtube.com/watch?v=F4cTWOxMjMY
