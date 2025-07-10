@@ -22,15 +22,16 @@ public class StateGraphView : GraphView {
 
         styleSheets.Add(Resources.Load<StyleSheet>("StateGraph"));
 
-        var entryNode = CreateEntryNode();
-        AddElement(entryNode);
+        var startNode = CreateStartNode();
+        AddElement(startNode);
 
         var endNode = CreateEndNode();
         AddElement(endNode);
     }
 
-    //private StateNode CreateEntryNode() {
-    private Node CreateEntryNode() {
+    //private StateNode CreateStartNode() {
+    /* TODO: add name as param (same as title?) */
+    public StartNode CreateStartNode() {
         /*
         var node = new StateNode {
             title = "START",
@@ -43,6 +44,7 @@ public class StateGraphView : GraphView {
         //var node = new Node {
         var node = new StartNode {
             title = "START",
+            name = "START",
             GUID = Guid.NewGuid().ToString(),
             /*entryPoint = true*/
         };
@@ -63,9 +65,10 @@ public class StateGraphView : GraphView {
         return node;
     }
 
-    private Node CreateEndNode() {
+    public EndNode CreateEndNode() {
         var node = new EndNode {
             title = "END",
+            name = "END",
             GUID = Guid.NewGuid().ToString()
         };
 
@@ -81,6 +84,7 @@ public class StateGraphView : GraphView {
     public StateNode CreateStateNode(string nodeName) {
         var node = new StateNode {
             title = nodeName,
+            name = nodeName,
             GUID = Guid.NewGuid().ToString()
         };
 

@@ -1,11 +1,11 @@
 using UnityEditor.Experimental.GraphView;
 using System;
 
-public class EndNode : BaseNode {
+public class StartNode : BaseNode {
 
-    public EndNode() {
-        entryPoint = false;
-        exitPoint = true;
+    public StartNode() {
+        startPoint = true;
+        endPoint = false;
     }
 
     /*
@@ -14,7 +14,7 @@ public class EndNode : BaseNode {
     }
     */
 
-    protected override Port CreateNextPort() {
+    protected override Port CreateInputPort() {
         return null;
     }
 }

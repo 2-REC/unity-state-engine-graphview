@@ -7,8 +7,8 @@ public class BaseNode : Node {
     public string GUID;
 
     /* TODO: needed? */
-    public bool entryPoint = false;
-    public bool exitPoint = false;
+    public bool startPoint = false;
+    public bool endPoint = false;
 
     public BaseNode() {
         // remove collapse button
