@@ -4,38 +4,71 @@ using System;
 
 public class StateNode : BaseNode {
 
-    public bool restartable;
+    public string sceneName;
+    public bool restartable = false;
+
+    private VisualElement _portContainer;
+
 
     public StateNode() {
-        /* TODO: add CSS */
-        Toggle restartableCheckbox = new("restartable");
+        /* TODO: add CSS? */
+        //extensionContainer.AddToClassList("state-node-extension-container");
+
+        // 'scene' text field
+        /* TODO: set default value */
+        TextField textField = new(string.Empty) {
+            label = "Scene"
+        };
+        textField.RegisterValueChangedCallback(evt => sceneName = evt.newValue);
+        extensionContainer.Add(textField);
+
+        // 'restartable' checkbox
+        Toggle restartableCheckbox = new("Restartable");
         restartableCheckbox.RegisterValueChangedCallback(evt => restartable = evt.newValue);
         extensionContainer.Add(restartableCheckbox);
 
-        var button = new Button(() => {
+        // 'add child' button
+        Button button = new(() => {
             AddChildPort();
         }) {
             text = "Add Child"
         };
         extensionContainer.Add(button);
 
+        // ports container
+        _portContainer = new VisualElement();
+        _portContainer.style.flexDirection = FlexDirection.Row;
+        extensionContainer.Add(_portContainer);
+
         RefreshExpandedState();
         RefreshPorts();
     }
 
     public Port InstantiateChildPort() {
-        return ChildPort.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(int));
+        return ChildPort.Create<Edge>(Orientation.Vertical, Direction.Output, Port.Capacity.Single, typeof(int));
     }
 
     public void AddChildPort(string portName="") {
-        var port = InstantiateChildPort();
+        Port port = InstantiateChildPort();
 
-        /* TODO: keep global counter */
-        //var nodeCount = extensionContainer.Query("connector").ToList().Count;
-        var nodeCount = extensionContainer.Query<Port>().ToList().Count;
-        port.portName = !string.IsNullOrEmpty(portName) ? portName : $"{nodeCount}";
+        if (string.IsNullOrEmpty(portName)) {
+            int highest = -1;
+            _portContainer.Query<Port>().ForEach(p => {
+                int result = -1;
+                try {
+                    result = int.Parse(p.portName);
+                } catch (FormatException) {}
 
-        extensionContainer.Add(port);
+                if (result > -1)
+                    highest = Math.Max(result, highest);
+            });
+            port.portName = $"{highest + 1}";
+
+        } else {
+            port.portName = portName;
+        }
+
+        _portContainer.Add(port);
         RefreshExpandedState();
         RefreshPorts();
     }

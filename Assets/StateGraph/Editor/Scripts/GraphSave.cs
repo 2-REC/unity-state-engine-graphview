@@ -1,15 +1,9 @@
-using Codice.Client.Common.GameUI;
-using NUnit.Framework;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEngine.Windows;
-using static Unity.VisualScripting.Metadata;
 
 public class GraphSave {
     private StateGraphView _stateGraphView;
@@ -65,6 +59,7 @@ public class GraphSave {
             graphContainer.statesData.Add(new StateNodeData {
                 guid = node.GUID,
                 name = node.name,
+                sceneName = node.sceneName,
                 restartable = node.restartable,
                 ports = node.extensionContainer.Query<Port>().ToList().Select(x => x.portName).ToList(),
                 position = node.GetPosition()
@@ -117,6 +112,7 @@ public class GraphSave {
         foreach (var cacheNode in _loadCache.statesData) {
             var stateNode = _stateGraphView.CreateStateNode(cacheNode.name);
             stateNode.GUID = cacheNode.guid;
+            stateNode.sceneName = cacheNode.sceneName;
             stateNode.restartable = cacheNode.restartable;
             stateNode.SetPosition(cacheNode.position);
             _stateGraphView.AddElement(stateNode);

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public class StateGraphView : GraphView {
 
-    private readonly Vector2 defaultNodeSize = new Vector2(150, 200);
+    private readonly Vector2 defaultNodeSize = new(150, 200);
 
     public StateGraphView() {
         this.AddManipulator(new ContentDragger());
@@ -48,6 +48,7 @@ public class StateGraphView : GraphView {
             GUID = Guid.NewGuid().ToString(),
             /*entryPoint = true*/
         };
+        node.capabilities &= ~Capabilities.Deletable;
         ////////
         /* TODO: make 'CreateNextPort' method in 'BaseNode' */
         /*
@@ -78,7 +79,17 @@ public class StateGraphView : GraphView {
     }
 
     public void CreateNode(string nodeName) {
-        AddElement(CreateStateNode(nodeName));
+        Node node = CreateStateNode(nodeName);
+
+        Vector2 worldPosition = new(
+            contentContainer.worldBound.width / 2 + contentContainer.worldBound.x,
+            contentContainer.worldBound.height / 2 + contentContainer.worldBound.y
+        );
+
+        Vector2 localPosition = contentViewContainer.WorldToLocal(worldPosition);
+        node.SetPosition(new Rect(localPosition - defaultNodeSize / 2, defaultNodeSize));
+
+        AddElement(node);
     }
 
     public StateNode CreateStateNode(string nodeName) {
@@ -105,7 +116,7 @@ public class StateGraphView : GraphView {
         node.RefreshPorts();
         */
 
-        node.SetPosition(new Rect(Vector2.zero, defaultNodeSize));
+        //node.SetPosition(new Rect(Vector2.zero, defaultNodeSize));
 
         return node;
     }

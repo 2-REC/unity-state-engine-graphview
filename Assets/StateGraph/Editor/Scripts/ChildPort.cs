@@ -12,12 +12,12 @@ public class ChildPort : Port {
 
         /*AddToClassList("child-port");*/
 
-        var deleteButton = new Button(() => {
+        Button deleteButton = new(() => {
             DeletePort();
-        });
-        /* TODO: use 'x' icon instead */
-        deleteButton.text = "X";
-        /*deleteButton.AddToClassList("child-port-button");*/
+        }) {
+            /* TODO: use 'x' icon instead */
+            text = "x"
+        };
         contentContainer.Add(deleteButton);
     }
 
@@ -35,12 +35,11 @@ public class ChildPort : Port {
         Orientation orientation,
         Direction direction,
         Capacity capacity,
-        Type type)
-        where TEdge : Edge, new() {
+        Type type
+    ) where TEdge : Edge, new() {
+        ChildPort port = new(orientation, direction, capacity, type);
 
-        ChildPort port = new ChildPort(orientation, direction, capacity, type);
-
-        DefaultEdgeConnectorListener listener = new DefaultEdgeConnectorListener();
+        DefaultEdgeConnectorListener listener = new();
         port.m_EdgeConnector = new EdgeConnector<TEdge>(listener);
         port.AddManipulator(port.m_EdgeConnector);
 
@@ -80,8 +79,6 @@ public class ChildPort : Port {
         }
 
         public void OnDrop(GraphView graphView, Edge edge) {
-            //Debug.Log("OnDrop");
-
             _edgesToCreate.Clear();
             _edgesToCreate.Add(edge);
             _edgesToDelete.Clear();

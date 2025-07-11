@@ -9,8 +9,24 @@ StateNode {
     background-color: #323232;
 }
 
+StateNode .unity-text-field__input {
+    min-width: 100px;
+}
+
+/*
+.state-node-extension-container Label {
+    min-width: 75px;
+}
+*/
+
 ChildPort {
-    background-color: #323232;
+    background-color: #282828;
+    margin: 2px;
+/*    border-width: 1px;*/
+    border-radius: 4px;
+}
+ChildPort Label {
+    display: none;
 }
 
 /*

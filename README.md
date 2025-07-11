@@ -77,16 +77,23 @@ for each state
 
 In "Graph/State Graph" menu:
 - [ ] Save Graph
-	- To XML
+	- To XML? (or 'asset' is enough?)
 	- States can be referred to in other graphs as "exit scenes".
 - [ ] Load Graph
-	- From XML
+	- From XML? (or 'asset' is enough?)
 - [ ] Generate Scenes
 	- [ ] Scenes (+scripts) are generated for each state (with exit conditions and operations).
 	- [ ] Existing scenes/scripts are updated (when possible)
 		- Backup of modified scenes and unused scenes (if no more associated state).
 			(specific directory, unique for each backup)
     - [ ] Report of new+modified scenes before starting process (need user confirmation).
+
+UI:
+- [ ] solve issue with state name/title + scene name...
+- [ ] add 'can exit graph' checkbox (+list of states?)
+- [ ] add minimap
+- [ ] add 'center view' button (reframe graph, pos+zoom) ('FrameAll'?)
+- [ ] add search window, with several state types ('basic', 'level', 'map', etc.)
 
 
 ====
