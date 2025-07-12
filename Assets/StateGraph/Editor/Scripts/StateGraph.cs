@@ -1,6 +1,6 @@
 using System.IO;
 using UnityEditor;
-using UnityEditor.Overlays;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -8,6 +8,7 @@ public class StateGraph : EditorWindow {
 
     private StateGraphView _graphView;
 
+    private static int _count = 0;
     private string _savePath;
 
     [MenuItem("Graph/State Graph")]
@@ -27,27 +28,33 @@ public class StateGraph : EditorWindow {
     }
 
     private void BuildToolbar() {
-        var toolbar = new UnityEditor.UIElements.Toolbar();
+        Toolbar toolbar = new();
 
         // 'Save' button
-        var saveButton = new Button(() => {
+        Button saveButton = new(() => {
             SaveGraph();
-        });
-        saveButton.text = "Save Graph";
+        }) {
+            text = "Save Graph"
+        };
         toolbar.Add(saveButton);
 
         // 'Load' button
-        var loadButton = new Button(() => {
+        Button loadButton = new (() => {
             LoadGraph();
-        });
-        loadButton.text = "Load Graph";
+        }) {
+            text = "Load Graph"
+        };
         toolbar.Add(loadButton);
 
         // 'Create Node' button
-        var nodeCreateButton = new Button(() => {
-            _graphView.CreateNode("STATE");
-        });
-        nodeCreateButton.text = "Create Node";
+        Button nodeCreateButton = new(() => {
+            // TODO: new state default name? (should be unique)
+            ++_count;
+            _graphView.CreateNode($"STATE_{_count}");
+            //_graphView.CreateNode("<NEW_STATE>");
+        }) {
+            text = "Create Node"
+        };
         toolbar.Add(nodeCreateButton);
 
         rootVisualElement.Add(toolbar);

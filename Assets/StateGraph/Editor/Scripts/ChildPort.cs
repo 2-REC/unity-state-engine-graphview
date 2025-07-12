@@ -10,13 +10,10 @@ public class ChildPort : Port {
     protected ChildPort(Orientation portOrientation, Direction portDirection, Capacity portCapacity, Type type)
         : base(portOrientation, portDirection, portCapacity, type) {
 
-        /*AddToClassList("child-port");*/
-
         Button deleteButton = new(() => {
             DeletePort();
         }) {
-            /* TODO: use 'x' icon instead */
-            text = "x"
+            tooltip = "Delete port"
         };
         contentContainer.Add(deleteButton);
     }

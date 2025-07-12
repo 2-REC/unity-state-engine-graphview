@@ -22,14 +22,23 @@ StateNode .unity-text-field__input {
 ChildPort {
     background-color: #282828;
     margin: 2px;
-/*    border-width: 1px;*/
     border-radius: 4px;
 }
+
 ChildPort Label {
     display: none;
 }
 
-/*
-.child-port-button {
+ChildPort Button {
+    width: 16px;
+    height: 16px;
+
+    background-image: resource("TreeEditor.Trash");
+    /*-unity-background-scale-mode: scale-to-fit;*/
+    background-size: 75%;
 }
-*/
+
+/* TODO: move to global file */
+.hidden {
+    display: none;
+}

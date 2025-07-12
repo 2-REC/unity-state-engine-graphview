@@ -125,6 +125,7 @@ public class StateGraphView : GraphView {
         var compatiblePorts = new List<Port>();
 
         ports.ForEach(port => {
+            // TODO: allow self as next or child?
             //if (startPort == port || startPort.node == port.node) {
             if (startPort == port)
                 return;

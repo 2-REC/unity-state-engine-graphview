@@ -89,7 +89,7 @@ In "Graph/State Graph" menu:
     - [ ] Report of new+modified scenes before starting process (need user confirmation).
 
 UI:
-- [ ] solve issue with state name/title + scene name...
+- [ ] limit inut characters in state name edit texfield?
 - [ ] add 'can exit graph' checkbox (+list of states?)
 - [ ] add minimap
 - [ ] add 'center view' button (reframe graph, pos+zoom) ('FrameAll'?)

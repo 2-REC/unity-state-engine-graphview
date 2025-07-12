@@ -8,19 +8,44 @@ public class StateNode : BaseNode {
     public bool restartable = false;
 
     private VisualElement _portContainer;
+    private Label _titleLabel;
+    private TextField _nameTextField;
+    private Button _editNameButton;
 
 
     public StateNode() {
-        /* TODO: add CSS? */
+        // TODO: add CSS?
         //extensionContainer.AddToClassList("state-node-extension-container");
 
+        // get title label
+        _titleLabel = titleContainer.Query<Label>().First();
+
+        // rename text field (hidden)
+        _nameTextField = new(string.Empty) {
+            isDelayed = true
+        };
+        _nameTextField.RegisterValueChangedCallback(evt => {
+            UpdateName(evt.newValue);
+        });
+        _nameTextField.AddToClassList("hidden");
+        // insert right after title label
+        titleContainer.Insert(_titleLabel.parent.IndexOf(_titleLabel) + 1, _nameTextField);
+
+        // 'rename' button
+        _editNameButton = new(() => {
+            EditName();
+        }) {
+            text = "Rename"
+        };
+        titleButtonContainer.Add(_editNameButton);
+
         // 'scene' text field
-        /* TODO: set default value */
-        TextField textField = new(string.Empty) {
+        // TODO: set default value?
+        TextField sceneTextField = new(string.Empty) {
             label = "Scene"
         };
-        textField.RegisterValueChangedCallback(evt => sceneName = evt.newValue);
-        extensionContainer.Add(textField);
+        sceneTextField.RegisterValueChangedCallback(evt => sceneName = evt.newValue);
+        extensionContainer.Add(sceneTextField);
 
         // 'restartable' checkbox
         Toggle restartableCheckbox = new("Restartable");
@@ -44,8 +69,32 @@ public class StateNode : BaseNode {
         RefreshPorts();
     }
 
+    private void EditName() {
+        _titleLabel.AddToClassList("hidden");
+        _editNameButton.AddToClassList("hidden");
+
+        _nameTextField.RemoveFromClassList("hidden");
+    }
+
+    private void UpdateName(string newName) {
+        if (!string.IsNullOrEmpty(newName)) {
+            title = newName;
+            name = newName;
+        }
+
+        _nameTextField.AddToClassList("hidden");
+
+        _titleLabel.RemoveFromClassList("hidden");
+        _editNameButton.RemoveFromClassList("hidden");
+    }
+
     public Port InstantiateChildPort() {
-        return ChildPort.Create<Edge>(Orientation.Vertical, Direction.Output, Port.Capacity.Single, typeof(int));
+        return ChildPort.Create<Edge>(
+            Orientation.Vertical,
+            Direction.Output,
+            Port.Capacity.Single,
+            typeof(int)
+        );
     }
 
     public void AddChildPort(string portName="") {
