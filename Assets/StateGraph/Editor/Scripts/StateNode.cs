@@ -1,4 +1,5 @@
 using UnityEditor.Experimental.GraphView;
+using UnityEngine;
 using UnityEngine.UIElements;
 using System;
 
@@ -26,6 +27,9 @@ public class StateNode : BaseNode {
         };
         _nameTextField.RegisterValueChangedCallback(evt => {
             UpdateName(evt.newValue);
+        });
+        _nameTextField.RegisterCallback<FocusOutEvent>(evt => {
+            UpdateName("");
         });
         _nameTextField.AddToClassList("hidden");
         // insert right after title label
@@ -73,6 +77,7 @@ public class StateNode : BaseNode {
         _titleLabel.AddToClassList("hidden");
         _editNameButton.AddToClassList("hidden");
 
+        _nameTextField.SetValueWithoutNotify(name);
         _nameTextField.RemoveFromClassList("hidden");
 
         // hack to set focus ('Focus' doesn't work as element not visible yet)
