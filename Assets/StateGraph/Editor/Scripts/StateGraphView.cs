@@ -1,8 +1,9 @@
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
-using System;
 using System.Collections.Generic;
+using System.Text;
+using System;
 
 public class StateGraphView : GraphView {
 
@@ -27,39 +28,18 @@ public class StateGraphView : GraphView {
 
         var endNode = CreateEndNode();
         AddElement(endNode);
+
+        serializeGraphElements += SerializeElements;
+        canPasteSerializedData += IsValidSerializedData;
+        unserializeAndPaste += UnserializeAndPaste;
     }
 
-    //private StateNode CreateStartNode() {
-    /* TODO: add name as param (same as title?) */
     public StartNode CreateStartNode() {
-        /*
-        var node = new StateNode {
-            title = "START",
-            GUID = Guid.NewGuid().ToString(),
-            entryPoint = true
-        };
-
-        var port = CreatePort(node, Direction.Output);
-        */
-        //var node = new Node {
         var node = new StartNode {
             title = "START",
-            name = "START",
-            GUID = Guid.NewGuid().ToString(),
-            /*entryPoint = true*/
+            name = "START"
         };
         node.capabilities &= ~Capabilities.Deletable;
-        ////////
-        /* TODO: make 'CreateNextPort' method in 'BaseNode' */
-        /*
-        var port = node.InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(int));
-        port.portName = "Next";
-        node.outputContainer.Add(port);
-
-        node.RefreshExpandedState();
-        node.RefreshPorts();
-        */
-        ////////
 
         node.SetPosition(new Rect(100, 200, 100, 150));
 
@@ -69,9 +49,10 @@ public class StateGraphView : GraphView {
     public EndNode CreateEndNode() {
         var node = new EndNode {
             title = "END",
-            name = "END",
-            GUID = Guid.NewGuid().ToString()
+            name = "END"
         };
+
+        // NOTE: keep 'deletable' as allow more than 1 end node
 
         node.SetPosition(new Rect(500, 200, 100, 150));
 
@@ -95,29 +76,8 @@ public class StateGraphView : GraphView {
     public StateNode CreateStateNode(string nodeName) {
         var node = new StateNode {
             title = nodeName,
-            name = nodeName,
-            GUID = Guid.NewGuid().ToString()
+            name = nodeName
         };
-
-        /*
-        var inputPort = CreateInputPort(node);
-        node.inputContainer.Add(inputPort);
-
-        // TODO: add 'Next' port
-        // ...
-
-        var button = new Button(() => {
-            AddChildPort(node);
-        });
-        button.text = "Add Child";
-        node.titleContainer.Add(button);
-
-        node.RefreshExpandedState();
-        node.RefreshPorts();
-        */
-
-        //node.SetPosition(new Rect(Vector2.zero, defaultNodeSize));
-
         return node;
     }
 
@@ -138,32 +98,60 @@ public class StateGraphView : GraphView {
         return compatiblePorts;
     }
 
-    /*
-    private Port CreateInputPort(StateNode node, string portName="Input") {
-        var port = node.InstantiateInputPort(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(int));
-        port.portName = portName;
-        return port;
+    string SerializeElements(IEnumerable<GraphElement> elements) {
+        List<string> serializedData = new();
+
+        foreach (var element in elements) {
+            if (element is StateNode node) {
+                StateNodeData nodeData = new(node);
+                serializedData.Add(JsonUtility.ToJson(nodeData));
+            }
+        }
+
+        StringBuilder stringBuilder = new();
+        stringBuilder.AppendJoin(";", serializedData);
+        return stringBuilder.ToString();
     }
-    */
 
-    /*
-    private Port CreateChildPort(StateNode node, Direction portDirection, Port.Capacity capacity = Port.Capacity.Single) {
-        return node.InstantiatePort(Orientation.Horizontal, portDirection, capacity, typeof(int));
+    private bool IsValidSerializedData(string data) {
+        try {
+            List<string> strings = new(data.Split(";"));
+            foreach (var str in strings) {
+                // check can be casted to 'StateNodeData'
+                JsonUtility.FromJson<StateNodeData>(str);
+            }
+        } catch {
+            return false;
+        }
+
+        return true;
     }
-    */
 
-    /*
-    private void AddChildPort(StateNode node) {
-        var port = CreateChildPort(node, Direction.Output);
-        //var port = new ChildPort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(int));
+    private void UnserializeAndPaste(string operationName, string data) {
+        ClearSelection();
+        foreach (var str in data.Split(";")) {
+            var tempNode = JsonUtility.FromJson<StateNodeData>(str);
 
-        // TODO: 'extensionContainer' or 'outputContainer'?
-        var nodeCount = node.extensionContainer.Query("connector").ToList().Count;
-        port.portName = $"Child {nodeCount}";
+            StateNode stateNode = CreateStateNode(tempNode.name);
+            stateNode.GUID = Guid.NewGuid().ToString();
+            stateNode.sceneName = tempNode.sceneName;
+            stateNode.restartable = tempNode.restartable;
 
-        node.extensionContainer.Add(port);
-        node.RefreshExpandedState();
-        node.RefreshPorts();
+            foreach (string portName in tempNode.ports) {
+                stateNode.AddChildPort(portName);
+            }
+
+            stateNode.SetPosition(
+                new Rect(
+                    tempNode.position.x + 25,
+                    tempNode.position.y + 25,
+                    tempNode.position.width,
+                    tempNode.position.height
+                )
+            );
+            AddElement(stateNode);
+            AddToSelection(stateNode);
+        }
     }
-    */
+
 }

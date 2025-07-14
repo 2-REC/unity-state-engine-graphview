@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using UnityEditor;
 using UnityEditor.UIElements;
@@ -18,12 +19,25 @@ public class StateGraph : EditorWindow {
     }
 
     private void OnEnable() {
-        BuildGraphView();
         BuildToolbar();
+        BuildToolbar2();
+        BuildGraphView();
+        //BuildMiniMap();
     }
 
     private void OnDisable() {
         rootVisualElement.Remove(_graphView);
+
+    }
+
+    private void BuildGraphView() {
+        _graphView = new StateGraphView {
+            name = "State Graph"
+        };
+
+        // using 'StretchToParentSize' overlaps the toolbars
+        _graphView.style.flexGrow = 1;
+        rootVisualElement.Add(_graphView);
 
     }
 
@@ -39,13 +53,29 @@ public class StateGraph : EditorWindow {
         toolbar.Add(saveButton);
 
         // 'Load' button
-        Button loadButton = new (() => {
+        Button loadButton = new(() => {
             LoadGraph();
         }) {
             text = "Load Graph"
         };
         toolbar.Add(loadButton);
 
+        // 'Generate' button
+        Button generateButton = new(() => {
+            GenerateGraph();
+        }) {
+            text = "Generate Graph"
+        };
+        toolbar.Add(generateButton);
+
+        rootVisualElement.Add(toolbar);
+    }
+
+    // TODO: rename!
+    private void BuildToolbar2() {
+        Toolbar toolbar = new();
+
+        // TODO: move to other toolbar
         // 'Create Node' button
         Button nodeCreateButton = new(() => {
             // TODO: new state default name? (should be unique)
@@ -57,18 +87,32 @@ public class StateGraph : EditorWindow {
         };
         toolbar.Add(nodeCreateButton);
 
+        // 'Reframe' button
+        Button reframeButton = new(() => {
+            _graphView.FrameAll();
+        }) {
+            text = "Center View"
+        };
+        toolbar.Add(reframeButton);
+
         rootVisualElement.Add(toolbar);
     }
 
-    private void BuildGraphView() {
-        _graphView = new StateGraphView {
-            name = "State Graph"
+    /*
+    private void BuildMiniMap() {
+        MiniMap miniMap = new() {
+            anchored = true
         };
+        // ????
+        Debug.Log($"HEIGHT: {_graphView.worldBound.height}");
+        // TODO: get offset due to toolbar/buttons
+        miniMap.SetPosition(new Rect(8, 24, 200, 200));
+        _graphView.Add(miniMap);
 
-        _graphView.StretchToParentSize();
-        rootVisualElement.Add(_graphView);
-
+        // hide Label
+        miniMap.Query<Label>().First().AddToClassList("hidden");
     }
+    */
 
     private void SaveGraph() {
         // get from previous save if any
@@ -116,4 +160,9 @@ public class StateGraph : EditorWindow {
         /* TODO: update graph name? */
         _savePath = loadPath;
     }
+
+    private void GenerateGraph() {
+        // TODO: generate XML/json + scenes and scripts
+    }
+
 }

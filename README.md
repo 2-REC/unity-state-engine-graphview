@@ -11,8 +11,13 @@ Using Unity Graphview to manage state graphs.
 	- ! Special case for level scenes! (TODO: allow to specify scene name prefix)
 - restartable (default: false): If state can be executed again when coming back from childen states.
 - isLevel (default: false): If state is related to game levels.
+	=> could be remmoved, and have derived class "LevelState"
+(TODO: handled here?
+	could be, but not really useful
 - exit scene (optional): Name of Unity scene (in other graph) to open when leaving graph.
-	- TODO: use state ID instead of scene (get IDs by parsing other graph - need to specify graph)
+	? - TODO: use state ID instead of scene (get IDs by parsing other graph - need to specify graph)
+	=> if specify state, limited to graph scenes, whereas if scene directly, could be a scene unrelated to grpahs... (what's best?)
+)
 - next (optional): Next state (see "Transitions").
 - children (optional): Children states (see "Transitions").
 
@@ -89,11 +94,17 @@ In "Graph/State Graph" menu:
     - [ ] Report of new+modified scenes before starting process (need user confirmation).
 
 UI:
-- [ ] limit inut characters in state name edit texfield?
-- [ ] add 'can exit graph' checkbox (+list of states?)
-- [ ] add minimap
-- [ ] add 'center view' button (reframe graph, pos+zoom) ('FrameAll'?)
+- [ ] limit input characters in state name edit texfield?
+- [x] implement 'copy', 'paste', 'duplicate' for state (right-click menu)
+- [ ] ? - add 'can exit graph' checkbox (+list of states?)
+- [x] add 'center view' button ('FrameAll')
 - [ ] add search window, with several state types ('basic', 'level', 'map', etc.)
+
+LATER:
+- [ ] add minimap
+	- [ ] fix size issue
+	- [x] hide text/legends?
+	- [ ] add contextual options? (resize...)
 
 
 ====

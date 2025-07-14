@@ -1,5 +1,4 @@
 using UnityEditor.Experimental.GraphView;
-using UnityEngine;
 using UnityEngine.UIElements;
 using System;
 
@@ -11,6 +10,8 @@ public class BaseNode : Node {
     public bool endPoint = false;
 
     public BaseNode() {
+        GUID = Guid.NewGuid().ToString();
+
         // remove collapse button
         VisualElement collapseButton = null;
         foreach (VisualElement child in titleButtonContainer.Children()) {
@@ -24,12 +25,6 @@ public class BaseNode : Node {
         CreateInputPort();
         CreateNextPort();
     }
-
-    /*
-    public override Port InstantiatePort(Orientation orientation, Direction direction, Port.Capacity capacity, Type type) {
-        return Port.Create<Edge>(orientation, direction, capacity, type);
-    }
-    */
 
     protected virtual Port CreateNextPort() {
         var port = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(int));

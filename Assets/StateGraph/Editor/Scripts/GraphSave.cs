@@ -27,43 +27,22 @@ public class GraphSave {
 
         // start node (only 1)
         var startNode = _nodes.Where(node => node.startPoint).First();
-        graphContainer.startNode = new BaseNodeData {
-            guid = startNode.GUID,
-            name = startNode.name,
-            position = startNode.GetPosition()
-        };
+        graphContainer.startNode = new BaseNodeData(startNode);
 
         // end node (only 1)
         var endNode = _nodes.Where(node => node.endPoint).First();
-        graphContainer.endNode = new BaseNodeData {
-            guid = endNode.GUID,
-            name = endNode.name,
-            position = endNode.GetPosition()
-        };
+        graphContainer.endNode = new BaseNodeData(endNode);
 
         // transitions
         foreach (var edge in _edges) {
-            var inputNode = edge.input.node as BaseNode;
-            var outputNode = edge.output.node as BaseNode;
-
-            graphContainer.transitionsData.Add(new TransitionData {
-                startNodeGuid = outputNode.GUID,
-                portName = edge.output.portName,
-                endNodeGuid = inputNode.GUID
-            });
+            graphContainer.transitionsData.Add(new TransitionData(edge));
         }
 
         // state nodes
         var nodes = _nodes.Where(node => !node.startPoint && !node.endPoint).ToList().Cast<StateNode>().ToList();
         foreach (var node in nodes) {
-            graphContainer.statesData.Add(new StateNodeData {
-                guid = node.GUID,
-                name = node.name,
-                sceneName = node.sceneName,
-                restartable = node.restartable,
-                ports = node.extensionContainer.Query<Port>().ToList().Select(x => x.portName).ToList(),
-                position = node.GetPosition()
-            });
+            graphContainer.statesData.Add(new StateNodeData(node));
+
         }
 
         AssetDatabase.CreateAsset(graphContainer, savePath);
@@ -114,12 +93,13 @@ public class GraphSave {
             stateNode.GUID = cacheNode.guid;
             stateNode.sceneName = cacheNode.sceneName;
             stateNode.restartable = cacheNode.restartable;
-            stateNode.SetPosition(cacheNode.position);
-            _stateGraphView.AddElement(stateNode);
 
             foreach (string portName in cacheNode.ports) {
                 stateNode.AddChildPort(portName);
             }
+
+            stateNode.SetPosition(cacheNode.position);
+            _stateGraphView.AddElement(stateNode);
         }
     }
 

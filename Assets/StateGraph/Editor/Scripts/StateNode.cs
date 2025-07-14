@@ -7,10 +7,10 @@ public class StateNode : BaseNode {
     public string sceneName;
     public bool restartable = false;
 
-    private VisualElement _portContainer;
-    private Label _titleLabel;
-    private TextField _nameTextField;
-    private Button _editNameButton;
+    private readonly VisualElement _portContainer;
+    private readonly Label _titleLabel;
+    private readonly TextField _nameTextField;
+    private readonly Button _editNameButton;
 
 
     public StateNode() {
@@ -74,6 +74,9 @@ public class StateNode : BaseNode {
         _editNameButton.AddToClassList("hidden");
 
         _nameTextField.RemoveFromClassList("hidden");
+
+        // hack to set focus ('Focus' doesn't work as element not visible yet)
+        _nameTextField.schedule.Execute(schedule => { _nameTextField.Focus(); }).StartingIn(1);
     }
 
     private void UpdateName(string newName) {

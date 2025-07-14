@@ -7,6 +7,6 @@ public class GraphContainer : ScriptableObject {
     public BaseNodeData startNode;
     public BaseNodeData endNode;
 
-    public List<StateNodeData> statesData = new List<StateNodeData>();
-    public List<TransitionData> transitionsData = new List<TransitionData>();
+    public List<StateNodeData> statesData = new();
+    public List<TransitionData> transitionsData = new();
 }
