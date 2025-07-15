@@ -134,8 +134,8 @@ public class StateGraphView : GraphView {
 
             StateNode stateNode = CreateStateNode(tempNode.name);
             stateNode.GUID = Guid.NewGuid().ToString();
-            stateNode.sceneName = tempNode.sceneName;
-            stateNode.restartable = tempNode.restartable;
+            stateNode.SceneName = tempNode.sceneName;
+            stateNode.Restartable = tempNode.restartable;
 
             foreach (string portName in tempNode.ports) {
                 stateNode.AddChildPort(portName);

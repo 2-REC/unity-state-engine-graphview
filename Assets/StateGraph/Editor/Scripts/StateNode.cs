@@ -1,17 +1,38 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
-using System;
 
 public class StateNode : BaseNode {
 
-    public string sceneName;
-    public bool restartable = false;
+    private string _sceneName;
+    public string SceneName {
+        get => _sceneName;
+        set {
+            // TODO: make validity checks?
+            _sceneName = value;
+            _sceneTextField.SetValueWithoutNotify(value);
+        }
+    }
+
+    private bool _restartable = false;
+    public bool Restartable {
+        get => _restartable;
+        set {
+            _restartable = value;
+            _restartableCheckbox.SetValueWithoutNotify(value);
+        }
+    }
 
     private readonly VisualElement _portContainer;
     private readonly Label _titleLabel;
     private readonly TextField _nameTextField;
     private readonly Button _editNameButton;
+
+    private readonly Toggle _restartableCheckbox;
+    private readonly TextField _sceneTextField;
 
 
     public StateNode() {
@@ -45,16 +66,16 @@ public class StateNode : BaseNode {
 
         // 'scene' text field
         // TODO: set default value?
-        TextField sceneTextField = new(string.Empty) {
+        _sceneTextField = new(string.Empty) {
             label = "Scene"
         };
-        sceneTextField.RegisterValueChangedCallback(evt => sceneName = evt.newValue);
-        extensionContainer.Add(sceneTextField);
+        _sceneTextField.RegisterValueChangedCallback(evt => _sceneName = evt.newValue);
+        extensionContainer.Add(_sceneTextField);
 
         // 'restartable' checkbox
-        Toggle restartableCheckbox = new("Restartable");
-        restartableCheckbox.RegisterValueChangedCallback(evt => restartable = evt.newValue);
-        extensionContainer.Add(restartableCheckbox);
+        _restartableCheckbox = new("Restartable");
+        _restartableCheckbox.RegisterValueChangedCallback(evt => _restartable = evt.newValue);
+        extensionContainer.Add(_restartableCheckbox);
 
         // 'add child' button
         Button button = new(() => {
@@ -129,4 +150,24 @@ public class StateNode : BaseNode {
         RefreshExpandedState();
         RefreshPorts();
     }
+
+    public List<BaseNode> GetChildrenNodes() {
+        List<BaseNode> childrenNodes = new();
+
+        _portContainer.Query<Port>().ForEach(p => {
+            var transition = p.connections.FirstOrDefault();
+            if (transition == null)
+                return;
+            var outputConnection = transition.input;
+            if (outputConnection == null)
+                return;
+
+            if (outputConnection.node is BaseNode parent) {
+                childrenNodes.Add(parent);
+            }
+        });
+
+        return childrenNodes;
+    }
+
 }

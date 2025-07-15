@@ -13,9 +13,9 @@ public class StateNodeData : BaseNodeData {
 
 
     public StateNodeData(StateNode node) : base(node) {
-        sceneName = node.sceneName;
-        restartable = node.restartable;
-        ports = node.extensionContainer.Query<Port>().ToList().Select(x => x.portName).ToList();
+        sceneName = node.SceneName;
+        restartable = node.Restartable;
+        ports = node.extensionContainer.Query<Port>().ToList().Select(port => port.portName).ToList();
     }
 
 }

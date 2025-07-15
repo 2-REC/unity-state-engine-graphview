@@ -44,7 +44,7 @@ public class ChildPort : Port {
     }
 
     protected void DeletePort() {
-        /* disconnect and delete edges */
+        // disconnect and delete edges
         var enumer = connections.GetEnumerator();
         while (enumer.MoveNext()) {
             Edge edge = enumer.Current;
@@ -52,11 +52,11 @@ public class ChildPort : Port {
             Disconnect(edge);
             edge.RemoveFromHierarchy();
 
-            /* NOTE: Horrible hack to avoid modifying enumerable inside loop */
+            // NOTE: Horrible hack to avoid modifying enumerable inside loop
             enumer = connections.GetEnumerator();
         }
 
-        /* delete port */
+        // delete port
         RemoveFromHierarchy();
     }
 

@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using UnityEditor;
 using UnityEditor.UIElements;
@@ -11,6 +10,7 @@ public class StateGraph : EditorWindow {
 
     private static int _count = 0;
     private string _savePath;
+    private string _exportPath;
 
     [MenuItem("Graph/State Graph")]
     public static void OpenStateGraphWindow() {
@@ -91,7 +91,7 @@ public class StateGraph : EditorWindow {
         Button reframeButton = new(() => {
             _graphView.FrameAll();
         }) {
-            text = "Center View"
+            text = "Reframe"
         };
         toolbar.Add(reframeButton);
 
@@ -124,11 +124,8 @@ public class StateGraph : EditorWindow {
             defaultName = Path.GetFileName(_savePath);
             directory = Path.GetDirectoryName(_savePath);
         }
-        Debug.Log($"defaultName: {defaultName}");
-        Debug.Log($"directory: {directory}");
 
         string savePath = EditorUtility.SaveFilePanelInProject("Save Graph", defaultName, "asset", "Save graph as...", directory);
-        Debug.Log($"save path: {savePath}");
         if (string.IsNullOrEmpty(savePath)) {
             return;
         }
@@ -146,7 +143,6 @@ public class StateGraph : EditorWindow {
         } else {
             directory = Path.GetDirectoryName(_savePath);
         }
-        Debug.Log($"directory: {directory}");
 
         var loadPath = EditorUtility.OpenFilePanel("Load Graph", directory, "asset");
         if (string.IsNullOrEmpty(loadPath)) {
@@ -162,7 +158,30 @@ public class StateGraph : EditorWindow {
     }
 
     private void GenerateGraph() {
-        // TODO: generate XML/json + scenes and scripts
+        // get from previous export if any
+        string defaultName, directory;
+        if (string.IsNullOrEmpty(_exportPath)) {
+            defaultName = _graphView.name;
+            directory = Application.dataPath;
+        } else {
+            defaultName = Path.GetFileName(_exportPath);
+            directory = Path.GetDirectoryName(_exportPath);
+        }
+
+        string exportPath = EditorUtility.SaveFilePanelInProject(
+            "Export Graph",
+            defaultName,
+            "xml",
+            "Export graph as...",
+            directory
+        );
+        if (string.IsNullOrEmpty(exportPath)) {
+            return;
+        }
+
+        var graphSave = GraphSave.GetInstance(_graphView);
+        graphSave.ExportGraph(exportPath);
+
     }
 
 }

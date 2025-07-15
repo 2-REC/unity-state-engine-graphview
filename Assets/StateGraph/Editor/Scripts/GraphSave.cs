@@ -26,11 +26,11 @@ public class GraphSave {
         var graphContainer = ScriptableObject.CreateInstance<GraphContainer>();
 
         // start node (only 1)
-        var startNode = _nodes.Where(node => node.startPoint).First();
+        var startNode = _nodes.OfType<StartNode>().First();
         graphContainer.startNode = new BaseNodeData(startNode);
 
         // end node (only 1)
-        var endNode = _nodes.Where(node => node.endPoint).First();
+        var endNode = _nodes.OfType<EndNode>().First();
         graphContainer.endNode = new BaseNodeData(endNode);
 
         // transitions
@@ -39,7 +39,7 @@ public class GraphSave {
         }
 
         // state nodes
-        var nodes = _nodes.Where(node => !node.startPoint && !node.endPoint).ToList().Cast<StateNode>().ToList();
+        List<StateNode> nodes = _nodes.OfType<StateNode>().ToList();
         foreach (var node in nodes) {
             graphContainer.statesData.Add(new StateNodeData(node));
 
@@ -91,8 +91,8 @@ public class GraphSave {
         foreach (var cacheNode in _loadCache.statesData) {
             var stateNode = _stateGraphView.CreateStateNode(cacheNode.name);
             stateNode.GUID = cacheNode.guid;
-            stateNode.sceneName = cacheNode.sceneName;
-            stateNode.restartable = cacheNode.restartable;
+            stateNode.SceneName = cacheNode.sceneName;
+            stateNode.Restartable = cacheNode.restartable;
 
             foreach (string portName in cacheNode.ports) {
                 stateNode.AddChildPort(portName);
@@ -126,10 +126,44 @@ public class GraphSave {
 
 
             // create transition
-            /* NOTE: not as in tutorial! */
             Edge edge = outputPort.ConnectTo(inputPort);
             _stateGraphView.AddElement(edge);
         }
     }
+    public void ExportGraph(string exportPath) {
 
+        // TODO: add checks!
+        // - unique IDs
+        // - scene names set
+        // - graph validity... (start, end, etc.)
+        // etc.
+
+        List<XmlState> xmlStates = new();
+
+        List<StateNode> nodes = _nodes.OfType<StateNode>().ToList();
+        foreach (var node in nodes) {
+            XmlState xmlState = new() {
+                id = node.name,
+                scene = node.SceneName,
+                restartable = node.Restartable,
+                isLevel = false,
+            };
+
+            var nextNode = node.GetNextNode();
+            if (nextNode != null)
+                xmlState.next = nextNode.name;
+
+            var childrenNodes = node.GetChildrenNodes();
+            if (childrenNodes.Count() > 0)
+                xmlState.children = new(childrenNodes.Select(child => child.name));
+
+            xmlStates.Add(xmlState);
+        }
+
+        XmlGraph xmlGraph = new() {
+            states = xmlStates
+        };
+
+        XmlHandler.Serialize(xmlGraph, exportPath);
+    }
 }

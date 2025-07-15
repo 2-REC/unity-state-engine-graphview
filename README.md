@@ -80,24 +80,37 @@ for each state
 
 # Commands
 
-In "Graph/State Graph" menu:
-- [ ] Save Graph
-	- To XML? (or 'asset' is enough?)
+- accessible from "Graph/State Graph" menu
+
+- Save Graph
+	- To 'asset' file
 	- States can be referred to in other graphs as "exit scenes".
-- [ ] Load Graph
-	- From XML? (or 'asset' is enough?)
+		=> Or should use scene name instead?
+- Load Graph
+	- From 'asset'
+- Export Graph
+	- To 'xml' file
+
+
+UI Features:
+- state
+	- name edit
+	- add/remove children nodes
+- 'copy', 'paste', 'duplicate' for states (right-click menu)
+- 'reframe'
+
+
+TODO:
 - [ ] Generate Scenes
+	- [ ] add checks before generating xml
 	- [ ] Scenes (+scripts) are generated for each state (with exit conditions and operations).
 	- [ ] Existing scenes/scripts are updated (when possible)
 		- Backup of modified scenes and unused scenes (if no more associated state).
 			(specific directory, unique for each backup)
     - [ ] Report of new+modified scenes before starting process (need user confirmation).
-
 UI:
 - [ ] limit input characters in state name edit texfield?
-- [x] implement 'copy', 'paste', 'duplicate' for state (right-click menu)
 - [ ] ? - add 'can exit graph' checkbox (+list of states?)
-- [x] add 'center view' button ('FrameAll')
 - [ ] add search window, with several state types ('basic', 'level', 'map', etc.)
 
 LATER:
@@ -105,6 +118,7 @@ LATER:
 	- [ ] fix size issue
 	- [x] hide text/legends?
 	- [ ] add contextual options? (resize...)
+- [ ] import graph (from xml)
 
 
 ====

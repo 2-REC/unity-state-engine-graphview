@@ -1,13 +1,10 @@
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
 using System;
+using System.Linq;
 
 public class BaseNode : Node {
     public string GUID;
-
-    /* TODO: needed? */
-    public bool startPoint = false;
-    public bool endPoint = false;
 
     public BaseNode() {
         GUID = Guid.NewGuid().ToString();
@@ -47,4 +44,24 @@ public class BaseNode : Node {
 
         return port;
     }
+
+    public virtual BaseNode GetNextNode() {
+        Port outputPort = outputContainer.Query<Port>().First();
+        if (outputPort == null)
+            return null;
+
+        var transition = outputPort.connections.FirstOrDefault();
+        if (transition == null)
+            return null;
+
+        var outputConnection = transition.input;
+        if (outputConnection == null)
+            return null;
+
+        return outputConnection.node as BaseNode;
+    }
+
+    // TODO: add 'GetInputNodes' method (mostly for checks)
+    //...
+
 }
