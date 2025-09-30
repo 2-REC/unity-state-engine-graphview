@@ -1,5 +1,5 @@
 # unity-state-engine-graphview
-Using Unity Graphview to manage state graphs.
+Using Unity Graphview to create state graphs usable by '[unity-state-engine](https://github.com/2-REC/unity-state-engine)'.
 
 
 ## State Properties
@@ -101,6 +101,8 @@ UI Features:
 
 
 TODO:
+- [ ] make first release 0.1 and new 'dev' branch
+
 - [ ] Generate Scenes
 	- [ ] add checks before generating xml
 	- [ ] Scenes (+scripts) are generated for each state (with exit conditions and operations).
