@@ -101,7 +101,8 @@ UI Features:
 
 
 TODO:
-- [ ] make first release 0.1 and new 'dev' branch
+- [x] create working 'dev' branch
+- [ ] make first release 0.1
 
 - [ ] Generate Scenes
 	- [ ] add checks before generating xml
