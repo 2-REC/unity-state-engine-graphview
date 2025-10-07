@@ -8,6 +8,7 @@ using UnityEngine.UIElements;
 public class StateNodeData : BaseNodeData {
     public string sceneName;
     public bool restartable;
+    public bool leavable;
 
     public List<string> ports;
 
@@ -15,6 +16,7 @@ public class StateNodeData : BaseNodeData {
     public StateNodeData(StateNode node) : base(node) {
         sceneName = node.SceneName;
         restartable = node.Restartable;
+        leavable = node.Leavable;
         ports = node.extensionContainer.Query<Port>().ToList().Select(port => port.portName).ToList();
     }
 

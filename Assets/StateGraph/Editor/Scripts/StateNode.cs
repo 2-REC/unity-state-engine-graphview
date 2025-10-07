@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.Experimental.GraphView;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 public class StateNode : BaseNode {
@@ -26,12 +25,22 @@ public class StateNode : BaseNode {
         }
     }
 
+    private bool _leavable = false;
+    public bool Leavable {
+        get => _leavable;
+        set {
+            _leavable = value;
+            _leavableCheckbox.SetValueWithoutNotify(value);
+        }
+    }
+
     private readonly VisualElement _portContainer;
     private readonly Label _titleLabel;
     private readonly TextField _nameTextField;
     private readonly Button _editNameButton;
 
     private readonly Toggle _restartableCheckbox;
+    private readonly Toggle _leavableCheckbox;
     private readonly TextField _sceneTextField;
 
 
@@ -76,6 +85,11 @@ public class StateNode : BaseNode {
         _restartableCheckbox = new("Restartable");
         _restartableCheckbox.RegisterValueChangedCallback(evt => _restartable = evt.newValue);
         extensionContainer.Add(_restartableCheckbox);
+
+        // 'leavable' checkbox
+        _leavableCheckbox = new("Leavable");
+        _leavableCheckbox.RegisterValueChangedCallback(evt => _leavable = evt.newValue);
+        extensionContainer.Add(_leavableCheckbox);
 
         // 'add child' button
         Button button = new(() => {

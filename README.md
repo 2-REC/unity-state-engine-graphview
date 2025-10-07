@@ -36,10 +36,11 @@ Using Unity Graphview to create state graphs usable by '[unity-state-engine](htt
 	- If need more than 1 state, can use "Children" states, in which case the state should not be "restartable".
 	- If "Next" state and no "Children" states, the next state is automatically pre-loaded for faster transition.
 
-- Exit Scene:
-	- To exit current graph and start state in another graph.
-	- Call "Leave" to switch to exit scene.
-		! - TODO: handle more than 1 exit scene per state ("LeaveGraph" connections?).
+- Leave:
+	- To exit the current graph and switch to another scene (typically in another graph).
+	- Call "Leave" to load an exit scene (providing the scene name).
+		- If no scene name is provided, the application is terminated.
+	- The scene corresponding to the provided scene name must be in the project build settings.
 
 
 ## Process
@@ -102,6 +103,8 @@ UI Features:
 
 TODO:
 - [x] create working 'dev' branch
+- [ ] ? - add 'meta' files to repo?
+- [ ] ? - add example resources files to repo?
 - [ ] make first release 0.1
 
 - [ ] Generate Scenes
@@ -113,7 +116,7 @@ TODO:
     - [ ] Report of new+modified scenes before starting process (need user confirmation).
 UI:
 - [ ] limit input characters in state name edit texfield?
-- [ ] ? - add 'can exit graph' checkbox (+list of states?)
+- [x] add 'leavable' checkbox
 - [ ] add search window, with several state types ('basic', 'level', 'map', etc.)
 
 LATER:

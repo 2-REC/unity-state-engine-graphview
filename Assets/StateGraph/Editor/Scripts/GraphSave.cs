@@ -93,6 +93,7 @@ public class GraphSave {
             stateNode.GUID = cacheNode.guid;
             stateNode.SceneName = cacheNode.sceneName;
             stateNode.Restartable = cacheNode.restartable;
+            stateNode.Leavable = cacheNode.leavable;
 
             foreach (string portName in cacheNode.ports) {
                 stateNode.AddChildPort(portName);
@@ -146,6 +147,7 @@ public class GraphSave {
                 id = node.name,
                 scene = node.SceneName,
                 restartable = node.Restartable,
+                leavable = node.Leavable,
                 isLevel = false,
             };
 

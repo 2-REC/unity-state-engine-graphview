@@ -22,6 +22,10 @@ public class XmlState {
 
     [DefaultValue(false)]
     [XmlAttribute]
+    public bool leavable;
+
+    [DefaultValue(false)]
+    [XmlAttribute]
     public bool isLevel;
 
     [XmlArray, XmlArrayItem("child")]
