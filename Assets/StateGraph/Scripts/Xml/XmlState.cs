@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Xml.Serialization;
 
 
+// TODO: should make 2 classes Global and Game?
 // TODO: implement interface 'IXmlData'?
 public class XmlState {
 
@@ -14,9 +16,11 @@ public class XmlState {
     [XmlAttribute]
     public string next;
 
+    [DefaultValue(false)]
     [XmlAttribute]
     public bool restartable;
 
+    [DefaultValue(false)]
     [XmlAttribute]
     public bool isLevel;
 
