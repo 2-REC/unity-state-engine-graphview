@@ -70,6 +70,7 @@
 - Briefing: Auto (get data from level description)
 
 !- Level
+	! => CHECK WIN/LOSE/QUIT instead!
 	- Minimum:
 		- EndLevelOp op (+LoadChild)
 	- Optional:
@@ -80,8 +81,8 @@
 - EndAnim: Auto (idem "BeginAnim")
 - EndAnimFail: Auto (idem "BeginAnim")
 
-- Debriefing: Auto (idem "Briefing")
-- DebriefingFail: Auto (idem "Briefing")
+- Debriefing: Auto (idem "Briefing") (! or else if children...!)
+- DebriefingFail: Auto (idem "Briefing") (! or else if children...!)
 
 - GameEnd: Auto (idem "GameIntro")
 
@@ -101,30 +102,53 @@
 ## Operations
 
 - StartLevelOp(int): SetLevel(int) + LoadChild
-- QuitOp: Leave (global start state)
-- EndLevelOp: SetLevelCompleted + ... + CommitChanges
-	(+EndProcess) (+ optional LoadChild)
-- EndLevelFailOp: LoseLife + ... + CommitChanges
-	(+EndProcess) (+ optional LoadChild)
-(? - Merge "EndLevelOp" & "EndLevelFailOp"?)
+    => In "map" if state exists (auto generated)
+    GetGameData().SetLevel(level);
+    + 'makeTransition'
+
+- EndLevelOpSuccess:
+    => In "level" (auto generated)
+    gameData.SetLevelCompleted()
+    (EndProcessWin() => To implement/override)
+    gameData.CommitChanges()
+    + 'win transition'
+
+- EndLevelFailOp:
+    => In "level" (auto generated)
+    gameData.LoseLife()
+    (EndProcessLose() => To implement/override)
+    gameData.CommitChanges()
+    + 'lose transition'
+
+- QuitLevelOp:
+    => In "level" (auto generated)
+    + 'quit level transition'
+
+- QuitGameOp:
+    => In "level" (auto generated)
+    + 'quit game transition'
 
 
 ### GameOperations
 
 Additional game specific operations.
 
-- Save: Map, Level, Quit
-	? - Briefing, Debriefing, (DebriefingFail)
-	? - Continue? GameOver?
-	=> SaveGame(str|int?)
+- Check Game Complete: In last state related to level in "success" branch (or default if no success/fail branches).
+    => In "level", if transition 'WIN_STOP_TRANSITION_STATE' (auto generated)
+    bool GetGameData().IsGameComplete()
 
-- CheckGameComplete: in last state related to level
-- CheckGameOver: in last state related to level if there is a "fail" branch
-- CheckContinue
-- UseContinue
+- Check Game Over: In last state related to level in "fail" branch.
+    bool GetGameData().IsGameOver()
 
+- Check Continue: After "Check Game Over".
+    bool GetGameData().CanContinue()
 
-## Remarks
+- Use Continue
+    int GetGameData().LoseContinue()
+        + do it here (+call CanContinue):
+            gameData.SetLevel(-1)
+            and in post level states, use 'latestLevel' to get the level (as current level is now '-1').
 
-...
+- Save
+    GameSessionManager.Instance.SaveGame(str|int?)
 
