@@ -2,11 +2,10 @@
 
 ## Main
 
-- [ ] Add example resources files to repo (should add global and game `.asset` files)
 - [ ] XML: add checks before generating xml file
 
-- [ ] make first release 0.1
-- [ ] create new Unity 6.2 project
+- [ ] create new Unity 6.2 project\
+	=> already exists, but not on git...
 - [ ] make package?
 
 
