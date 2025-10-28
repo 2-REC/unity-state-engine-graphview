@@ -1,0 +1,152 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70a11b5d6d887f24ca6a20f0754f3b69, type: 3}
+  m_Name: graphs_game_states
+  m_EditorClassIdentifier: Xml::GraphContainer
+  startNode:
+    guid: af385504-6d3a-4f3c-8bf1-5f77f81f02a0
+    name: START
+    position:
+      serializedVersion: 2
+      x: 100
+      y: 200
+      width: 65.600006
+      height: 76.79999
+  statesData:
+  - guid: 9e64440c-fd66-4aa6-9c3a-642000d2ff49
+    name: LEVEL
+    position:
+      serializedVersion: 2
+      x: 211.2
+      y: 200
+      width: 236.8
+      height: 201.6
+    sceneName: 
+    restartable: 1
+    leavable: 0
+    isLevel: 1
+    ports:
+    - 0
+    - 1
+  - guid: 9061bff2-35f1-472f-8af2-59f4e46b8367
+    name: SUCCESS
+    position:
+      serializedVersion: 2
+      x: 268
+      y: 665.6
+      width: 236.79999
+      height: 201.60004
+    sceneName: Success
+    restartable: 0
+    leavable: 0
+    isLevel: 0
+    ports:
+    - 0
+  - guid: 03a3ab43-a81a-47e8-8f2c-f6fa63be1376
+    name: FAILURE
+    position:
+      serializedVersion: 2
+      x: 329.6
+      y: 431.2
+      width: 236.80002
+      height: 201.59998
+    sceneName: Failure
+    restartable: 0
+    leavable: 0
+    isLevel: 0
+    ports:
+    - 0
+  - guid: 40722b0c-3e4b-4403-8cea-23edf0d0dfc9
+    name: GAME_END
+    position:
+      serializedVersion: 2
+      x: 329.6
+      y: 948
+      width: 236.80002
+      height: 172.80005
+    sceneName: GameEnd
+    restartable: 0
+    leavable: 0
+    isLevel: 0
+    ports: []
+  - guid: 9366ae29-a051-42e7-a6bd-256f745352ce
+    name: CONTINUE
+    position:
+      serializedVersion: 2
+      x: 887.2
+      y: 948
+      width: 236.79999
+      height: 201.59998
+    sceneName: Continue
+    restartable: 0
+    leavable: 0
+    isLevel: 0
+    ports:
+    - 0
+  - guid: a78815e8-e7bb-4f9a-82e9-3503a33797c7
+    name: GAME_OVER
+    position:
+      serializedVersion: 2
+      x: 622.4
+      y: 591.2
+      width: 236.79999
+      height: 200.79999
+    sceneName: GameOver
+    restartable: 0
+    leavable: 0
+    isLevel: 0
+    ports:
+    - 0
+  - guid: 63ce3675-5679-47d0-84d8-055b44c110e9
+    name: QUIT_GAME
+    position:
+      serializedVersion: 2
+      x: 1227.2
+      y: 745.6
+      width: 236.80005
+      height: 172.80005
+    sceneName: QuitGame
+    restartable: 0
+    leavable: 0
+    isLevel: 0
+    ports: []
+  transitionsData:
+  - startNodeGuid: af385504-6d3a-4f3c-8bf1-5f77f81f02a0
+    portName: Next
+    endNodeGuid: 9e64440c-fd66-4aa6-9c3a-642000d2ff49
+  - startNodeGuid: 9e64440c-fd66-4aa6-9c3a-642000d2ff49
+    portName: Next
+    endNodeGuid: 63ce3675-5679-47d0-84d8-055b44c110e9
+  - startNodeGuid: 9e64440c-fd66-4aa6-9c3a-642000d2ff49
+    portName: 0
+    endNodeGuid: 9061bff2-35f1-472f-8af2-59f4e46b8367
+  - startNodeGuid: 9e64440c-fd66-4aa6-9c3a-642000d2ff49
+    portName: 1
+    endNodeGuid: 03a3ab43-a81a-47e8-8f2c-f6fa63be1376
+  - startNodeGuid: 9061bff2-35f1-472f-8af2-59f4e46b8367
+    portName: 0
+    endNodeGuid: 40722b0c-3e4b-4403-8cea-23edf0d0dfc9
+  - startNodeGuid: 40722b0c-3e4b-4403-8cea-23edf0d0dfc9
+    portName: Next
+    endNodeGuid: 63ce3675-5679-47d0-84d8-055b44c110e9
+  - startNodeGuid: a78815e8-e7bb-4f9a-82e9-3503a33797c7
+    portName: Next
+    endNodeGuid: 9366ae29-a051-42e7-a6bd-256f745352ce
+  - startNodeGuid: a78815e8-e7bb-4f9a-82e9-3503a33797c7
+    portName: 0
+    endNodeGuid: 63ce3675-5679-47d0-84d8-055b44c110e9
+  - startNodeGuid: 9366ae29-a051-42e7-a6bd-256f745352ce
+    portName: 0
+    endNodeGuid: 63ce3675-5679-47d0-84d8-055b44c110e9
+  - startNodeGuid: 03a3ab43-a81a-47e8-8f2c-f6fa63be1376
+    portName: 0
+    endNodeGuid: a78815e8-e7bb-4f9a-82e9-3503a33797c7

@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70a11b5d6d887f24ca6a20f0754f3b69, type: 3}
+  m_Name: graphs_global_states
+  m_EditorClassIdentifier: 
+  startNode:
+    guid: 93578176-35e6-4c4c-a70a-2b2a3318e31b
+    name: START
+    position:
+      serializedVersion: 2
+      x: 100
+      y: 200
+      width: 65.600006
+      height: 76.79999
+  statesData:
+  - guid: c5f64220-aeb9-4e7f-9656-c5f87832d2db
+    name: MENU
+    position:
+      serializedVersion: 2
+      x: 232.8
+      y: 200
+      width: 236.8
+      height: 201.6
+    sceneName: Menu
+    restartable: 1
+    leavable: 0
+    isLevel: 0
+    ports:
+    - 0
+  - guid: 82771867-72aa-423b-9456-4d28044c0af5
+    name: NEW_GAME
+    position:
+      serializedVersion: 2
+      x: 404
+      y: 441.6
+      width: 236.79999
+      height: 172.80002
+    sceneName: NewGame
+    restartable: 0
+    leavable: 1
+    isLevel: 0
+    ports: []
+  - guid: 0e48ee2f-5662-49fb-bc77-34639113521b
+    name: QUIT
+    position:
+      serializedVersion: 2
+      x: 604.8
+      y: 200
+      width: 236.79999
+      height: 172.79999
+    sceneName: Quit
+    restartable: 0
+    leavable: 1
+    isLevel: 0
+    ports: []
+  transitionsData:
+  - startNodeGuid: c5f64220-aeb9-4e7f-9656-c5f87832d2db
+    portName: 0
+    endNodeGuid: 82771867-72aa-423b-9456-4d28044c0af5
+  - startNodeGuid: c5f64220-aeb9-4e7f-9656-c5f87832d2db
+    portName: Next
+    endNodeGuid: 0e48ee2f-5662-49fb-bc77-34639113521b
+  - startNodeGuid: 93578176-35e6-4c4c-a70a-2b2a3318e31b
+    portName: Next
+    endNodeGuid: c5f64220-aeb9-4e7f-9656-c5f87832d2db
