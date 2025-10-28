@@ -14,8 +14,9 @@ public class XmlState {
     [XmlAttribute]
     public string scene;
 
+    [DefaultValue(false)]
     [XmlAttribute]
-    public string next;
+    public bool isLevel;
 
     [DefaultValue(false)]
     [XmlAttribute]
@@ -25,10 +26,10 @@ public class XmlState {
     [XmlAttribute]
     public bool leavable;
 
-    [DefaultValue(false)]
     [XmlAttribute]
-    public bool isLevel;
+    public string next;
 
     [XmlArray, XmlArrayItem("child")]
-    public List<string> children;
+    public List<XmlChild> children;
+
 }

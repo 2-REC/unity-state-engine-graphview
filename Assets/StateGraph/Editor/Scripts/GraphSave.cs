@@ -156,8 +156,15 @@ public class GraphSave {
                 xmlState.next = nextNode.name;
 
             var childrenNodes = node.GetChildrenNodes();
-            if (childrenNodes.Count() > 0)
-                xmlState.children = new(childrenNodes.Select(child => child.name));
+            if (childrenNodes.Count() > 0) {
+                xmlState.children = new();
+                foreach (var child in childrenNodes) {
+                    XmlChild xmlChild = new() {
+                        id = child.name,
+                    };
+                    xmlState.children.Add(xmlChild);
+                }
+            }
 
             xmlStates.Add(xmlState);
         }
