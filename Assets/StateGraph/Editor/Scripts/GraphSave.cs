@@ -29,10 +29,6 @@ public class GraphSave {
         var startNode = _nodes.OfType<StartNode>().First();
         graphContainer.startNode = new BaseNodeData(startNode);
 
-        // end node (only 1)
-        var endNode = _nodes.OfType<EndNode>().First();
-        graphContainer.endNode = new BaseNodeData(endNode);
-
         // transitions
         foreach (var edge in _edges) {
             graphContainer.transitionsData.Add(new TransitionData(edge));
@@ -80,13 +76,6 @@ public class GraphSave {
         startNode.SetPosition(_loadCache.startNode.position);
         _stateGraphView.AddElement(startNode);
 
-        // end node
-        var endNode = _stateGraphView.CreateEndNode();
-        endNode.GUID = _loadCache.endNode.guid;
-        endNode.name = _loadCache.endNode.name;
-        endNode.SetPosition(_loadCache.endNode.position);
-        _stateGraphView.AddElement(endNode);
-
         // state nodes
         foreach (var cacheNode in _loadCache.statesData) {
             var stateNode = _stateGraphView.CreateStateNode(cacheNode.name);
@@ -133,10 +122,10 @@ public class GraphSave {
         }
     }
     public void ExportGraph(string exportPath) {
-        // TODO: add checks!
+        // TODO: add checks
         // - unique IDs
         // - scene names set (unless 'isLevel')
-        // - graph validity... (start, end, etc.)
+        // - graph validity (start, no isolated states, etc.)
         // etc.
 
         List<XmlState> xmlStates = new();
