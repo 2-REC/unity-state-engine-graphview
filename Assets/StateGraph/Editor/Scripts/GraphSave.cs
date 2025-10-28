@@ -29,10 +29,6 @@ public class GraphSave {
         var startNode = _nodes.OfType<StartNode>().First();
         graphContainer.startNode = new BaseNodeData(startNode);
 
-        // end node (only 1)
-        var endNode = _nodes.OfType<EndNode>().First();
-        graphContainer.endNode = new BaseNodeData(endNode);
-
         // transitions
         foreach (var edge in _edges) {
             graphContainer.transitionsData.Add(new TransitionData(edge));
@@ -80,19 +76,14 @@ public class GraphSave {
         startNode.SetPosition(_loadCache.startNode.position);
         _stateGraphView.AddElement(startNode);
 
-        // end node
-        var endNode = _stateGraphView.CreateEndNode();
-        endNode.GUID = _loadCache.endNode.guid;
-        endNode.name = _loadCache.endNode.name;
-        endNode.SetPosition(_loadCache.endNode.position);
-        _stateGraphView.AddElement(endNode);
-
         // state nodes
         foreach (var cacheNode in _loadCache.statesData) {
             var stateNode = _stateGraphView.CreateStateNode(cacheNode.name);
             stateNode.GUID = cacheNode.guid;
             stateNode.SceneName = cacheNode.sceneName;
             stateNode.Restartable = cacheNode.restartable;
+            stateNode.Leavable = cacheNode.leavable;
+            stateNode.IsLevel = cacheNode.isLevel;
 
             foreach (string portName in cacheNode.ports) {
                 stateNode.AddChildPort(portName);
@@ -131,11 +122,10 @@ public class GraphSave {
         }
     }
     public void ExportGraph(string exportPath) {
-
-        // TODO: add checks!
+        // TODO: add checks
         // - unique IDs
-        // - scene names set
-        // - graph validity... (start, end, etc.)
+        // - scene names set (unless 'isLevel')
+        // - graph validity (start, no isolated states, etc.)
         // etc.
 
         List<XmlState> xmlStates = new();
@@ -144,9 +134,10 @@ public class GraphSave {
         foreach (var node in nodes) {
             XmlState xmlState = new() {
                 id = node.name,
-                scene = node.SceneName,
+                scene = node.IsLevel ? "" : node.SceneName,
                 restartable = node.Restartable,
-                isLevel = false,
+                leavable = node.Leavable,
+                isLevel = node.IsLevel,
             };
 
             var nextNode = node.GetNextNode();
@@ -154,8 +145,15 @@ public class GraphSave {
                 xmlState.next = nextNode.name;
 
             var childrenNodes = node.GetChildrenNodes();
-            if (childrenNodes.Count() > 0)
-                xmlState.children = new(childrenNodes.Select(child => child.name));
+            if (childrenNodes.Count() > 0) {
+                xmlState.children = new();
+                foreach (var child in childrenNodes) {
+                    XmlChild xmlChild = new() {
+                        id = child.name,
+                    };
+                    xmlState.children.Add(xmlChild);
+                }
+            }
 
             xmlStates.Add(xmlState);
         }

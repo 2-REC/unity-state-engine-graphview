@@ -26,9 +26,6 @@ public class StateGraphView : GraphView {
         var startNode = CreateStartNode();
         AddElement(startNode);
 
-        var endNode = CreateEndNode();
-        AddElement(endNode);
-
         serializeGraphElements += SerializeElements;
         canPasteSerializedData += IsValidSerializedData;
         unserializeAndPaste += UnserializeAndPaste;
@@ -42,19 +39,6 @@ public class StateGraphView : GraphView {
         node.capabilities &= ~Capabilities.Deletable;
 
         node.SetPosition(new Rect(100, 200, 100, 150));
-
-        return node;
-    }
-
-    public EndNode CreateEndNode() {
-        var node = new EndNode {
-            title = "END",
-            name = "END"
-        };
-
-        // NOTE: keep 'deletable' as allow more than 1 end node
-
-        node.SetPosition(new Rect(500, 200, 100, 150));
 
         return node;
     }
@@ -136,6 +120,8 @@ public class StateGraphView : GraphView {
             stateNode.GUID = Guid.NewGuid().ToString();
             stateNode.SceneName = tempNode.sceneName;
             stateNode.Restartable = tempNode.restartable;
+            stateNode.Leavable = tempNode.leavable;
+            stateNode.IsLevel = tempNode.isLevel;
 
             foreach (string portName in tempNode.ports) {
                 stateNode.AddChildPort(portName);
