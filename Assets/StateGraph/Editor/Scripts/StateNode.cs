@@ -34,14 +34,29 @@ public class StateNode : BaseNode {
         }
     }
 
-    private readonly VisualElement _portContainer;
+    private bool _isLevel = false;
+    public bool IsLevel {
+        get => _isLevel;
+        set {
+            _isLevel = value;
+            _isLevelCheckbox.SetValueWithoutNotify(value);
+
+            _sceneTextField.SetEnabled(!_isLevel);
+            _sceneTextField.isPasswordField = _isLevel;
+            _sceneTextField.maskChar = ' ';
+        }
+    }
+
     private readonly Label _titleLabel;
     private readonly TextField _nameTextField;
     private readonly Button _editNameButton;
 
+    private readonly TextField _sceneTextField;
+    private readonly Toggle _isLevelCheckbox;
     private readonly Toggle _restartableCheckbox;
     private readonly Toggle _leavableCheckbox;
-    private readonly TextField _sceneTextField;
+
+    private readonly VisualElement _portContainer;
 
 
     public StateNode() {
@@ -78,17 +93,22 @@ public class StateNode : BaseNode {
         _sceneTextField = new(string.Empty) {
             label = "Scene"
         };
-        _sceneTextField.RegisterValueChangedCallback(evt => _sceneName = evt.newValue);
+        _sceneTextField.RegisterValueChangedCallback(evt => SceneName = evt.newValue);
         extensionContainer.Add(_sceneTextField);
+
+        // 'level state' checkbox
+        _isLevelCheckbox = new("Level state");
+        _isLevelCheckbox.RegisterValueChangedCallback(evt => IsLevel = evt.newValue);
+        extensionContainer.Add(_isLevelCheckbox);
 
         // 'restartable' checkbox
         _restartableCheckbox = new("Restartable");
-        _restartableCheckbox.RegisterValueChangedCallback(evt => _restartable = evt.newValue);
+        _restartableCheckbox.RegisterValueChangedCallback(evt => Restartable = evt.newValue);
         extensionContainer.Add(_restartableCheckbox);
 
         // 'leavable' checkbox
         _leavableCheckbox = new("Leavable");
-        _leavableCheckbox.RegisterValueChangedCallback(evt => _leavable = evt.newValue);
+        _leavableCheckbox.RegisterValueChangedCallback(evt => Leavable = evt.newValue);
         extensionContainer.Add(_leavableCheckbox);
 
         // 'add child' button

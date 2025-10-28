@@ -94,6 +94,7 @@ public class GraphSave {
             stateNode.SceneName = cacheNode.sceneName;
             stateNode.Restartable = cacheNode.restartable;
             stateNode.Leavable = cacheNode.leavable;
+            stateNode.IsLevel = cacheNode.isLevel;
 
             foreach (string portName in cacheNode.ports) {
                 stateNode.AddChildPort(portName);
@@ -132,10 +133,9 @@ public class GraphSave {
         }
     }
     public void ExportGraph(string exportPath) {
-
         // TODO: add checks!
         // - unique IDs
-        // - scene names set
+        // - scene names set (unless 'isLevel')
         // - graph validity... (start, end, etc.)
         // etc.
 
@@ -145,10 +145,10 @@ public class GraphSave {
         foreach (var node in nodes) {
             XmlState xmlState = new() {
                 id = node.name,
-                scene = node.SceneName,
+                scene = node.IsLevel ? "" : node.SceneName,
                 restartable = node.Restartable,
                 leavable = node.Leavable,
-                isLevel = false,
+                isLevel = node.IsLevel,
             };
 
             var nextNode = node.GetNextNode();

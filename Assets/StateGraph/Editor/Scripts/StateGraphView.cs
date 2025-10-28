@@ -137,6 +137,7 @@ public class StateGraphView : GraphView {
             stateNode.SceneName = tempNode.sceneName;
             stateNode.Restartable = tempNode.restartable;
             stateNode.Leavable = tempNode.leavable;
+            stateNode.IsLevel = tempNode.isLevel;
 
             foreach (string portName in tempNode.ports) {
                 stateNode.AddChildPort(portName);

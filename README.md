@@ -107,6 +107,8 @@ TODO:
 - [ ] ? - add example resources files to repo?
 - [ ] make first release 0.1
 
+- [ ] handle 'isLevel'!
+
 - [ ] Generate Scenes
 	- [ ] add checks before generating xml
 	- [ ] Scenes (+scripts) are generated for each state (with exit conditions and operations).

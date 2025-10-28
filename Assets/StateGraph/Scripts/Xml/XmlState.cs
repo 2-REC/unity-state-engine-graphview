@@ -10,6 +10,7 @@ public class XmlState {
     [XmlAttribute]
     public string id;
 
+    [DefaultValue("")]
     [XmlAttribute]
     public string scene;
 
